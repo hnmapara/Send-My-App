@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="/Users/harshit/work/MyWorkspace/Send-My-App/res" >
+            <file
+                path="/Users/harshit/work/MyWorkspace/Send-My-App/res/values/strings.xml"
+                qualifiers="" >
+                <string name="version" >1.0
+                </string>
+                <string name="splash1" >▁ ▂ ▄ ▅ ▆ ▇ █ мρ3 тαg є∂ιтσя █ ▇ ▆ ▅ ▄ ▂ ▁
+                </string>
+                <string name="action_settings" >Settings
+                </string>
+                <string name="splash2" >ℳρ3 ✞α❡ €ⅾїт◎ґ
+                </string>
+
+                <string-array name="default_support_email" >
+                    <item>
+harshit.mapara@gmail.com
+                    </item>
+                </string-array>
+
+                <string name="app_name" >Mp3 Editor
+                </string>
+                <string name="version_append" >Version 1.0
+                </string>
+            </file>
+            <file
+                path="/Users/harshit/work/MyWorkspace/Send-My-App/res/values/styles.xml"
+                qualifiers="" >
+
+                <style name="FileNameStyle" >
+                    <item name="android:textSize">
+10sp
+                    </item>
+                    <item name="android:textColor">
+#333333
+                    </item>
+                    <item name="android:shadowColor">
+#ffffff
+                    </item>
+                    <item name="android:shadowDx">
+0
+                    </item>
+                    <item name="android:shadowDy">
+1
+                    </item>
+                    <item name="android:shadowRadius">
+1
+                    </item>
+                </style>
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Light" >
+
+                    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+                    -->
+                </style>
+
+                <style
+                    name="AppTheme"
+                    parent="AppBaseTheme" >
+
+                    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+                </style>
+            </file>
+            <file
+                path="/Users/harshit/work/MyWorkspace/Send-My-App/res/values/dimens.xml"
+                qualifiers="" >
+                <dimen name="music_icon_padding" >8dp
+                </dimen>
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+            </file>
+            <file
+                path="/Users/harshit/work/MyWorkspace/Send-My-App/res/values/colors.xml"
+                qualifiers="" >
+                <color name="folder_row_backgroud" >#FFF9F6
+                </color>
+                <color name="list_row_touch_highlight" >#BDBAFF
+                </color>
+            </file>
+            <file
+                name="main"
+                path="/Users/harshit/work/MyWorkspace/Send-My-App/res/menu/main.xml"
+                qualifiers=""
+                type="menu" />
+        </source>
+        <source path="/Users/harshit/work/MyWorkspace/Send-My-App/build/res/rs/debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="/Users/harshit/work/MyWorkspace/Send-My-App/build-types/debug/res" />
+    </dataSet>
+
+</merger>
