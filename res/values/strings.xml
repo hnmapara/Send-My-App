@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Mp3 Editor</string>
+    <string name="app_name">Send My App</string>
 
     <string name="version">1.0</string>
     <string name="version_append">Version 1.0</string>
