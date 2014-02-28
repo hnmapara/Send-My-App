@@ -8,8 +8,10 @@ import android.app.Activity;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.mapara.sendmyapp.helper.CrashLog;
+import com.mapara.sendmyapp.helper.SendAppUtility;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,6 +31,10 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
         app = (SendAppApplication) getApplicationContext();
         maybeSendCrashLog(CrashLog.instance(app).previousCrashLog());
+        SendAppUtility.getListofInstalledApp(this);
+        TextView tv = new TextView(this);
+        tv.setText("Send your app");
+        setContentView(tv);
 	}
 
 	@Override

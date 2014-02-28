@@ -3,9 +3,12 @@ package com.mapara.sendmyapp.helper;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.util.Log;
@@ -14,6 +17,19 @@ public class SendAppUtility {
 	
 	public static final String TAG = "Mp3Utility";
 
+    public static void getListofInstalledApp(Context ctx) {
+        final PackageManager pm = ctx.getPackageManager();
+        //get a list of installed apps.
+        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        for (ApplicationInfo packageInfo : packages) {
+            Log.d(TAG, "Installed package :" + packageInfo.packageName);
+            File f = new File(packageInfo.sourceDir);
+            Log.d(TAG, "Source dir : " + packageInfo.sourceDir + " & size : "+ formattedFileSize(f.length()));
+            //Log.d(TAG, "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
+        }
+        // the getLaunchIntentForPackage returns an intent that you can use with startActivity()
+    }
 
     public static void scanSDCardFile(Context ctx, String[] filePaths) {
         MediaScannerConnection.scanFile(ctx, filePaths, null,
