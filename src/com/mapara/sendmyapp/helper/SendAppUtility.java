@@ -3,22 +3,23 @@ package com.mapara.sendmyapp.helper;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.util.Log;
 
 public class SendAppUtility {
 	
-	public static final String TAG = "Mp3Utility";
+	public static final String TAG = SendAppUtility.class.getSimpleName();
 
-    public static void getListofInstalledApp(Context ctx) {
-        final PackageManager pm = ctx.getPackageManager();
+    private static List<ApplicationInfo> getListofInstalledApp(Context ctx, PackageManager pm) {
         //get a list of installed apps.
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
@@ -28,7 +29,17 @@ public class SendAppUtility {
             Log.d(TAG, "Source dir : " + packageInfo.sourceDir + " & size : "+ formattedFileSize(f.length()));
             //Log.d(TAG, "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
         }
-        // the getLaunchIntentForPackage returns an intent that you can use with startActivity()
+       return packages;
+    }
+
+    public static List<Drawable> getListofInstalledAppImages(Context ctx) {
+        final PackageManager pm = ctx.getPackageManager();
+        List<ApplicationInfo> packages = getListofInstalledApp(ctx, pm);
+        List<Drawable> apkImageIds = new ArrayList<Drawable>();
+        for (ApplicationInfo ai : packages) {
+            apkImageIds.add(ai.loadIcon(pm));
+        }
+        return apkImageIds;
     }
 
     public static void scanSDCardFile(Context ctx, String[] filePaths) {
