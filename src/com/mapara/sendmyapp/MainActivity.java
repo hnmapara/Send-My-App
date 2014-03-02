@@ -7,10 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.mapara.sendmyapp.helper.CrashLog;
 import com.mapara.sendmyapp.helper.SendAppUtility;
@@ -29,18 +32,62 @@ public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private  SendAppApplication app;
     private GridView gridView;
+    private List<SendAppUtility.ApkInfo> imageList;
+    private ViewSwitcher switcher;
+    private static final int REFRESH_SCREEN = 1;
 
-	@Override
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         app = (SendAppApplication) getApplicationContext();
         maybeSendCrashLog(CrashLog.instance(app).previousCrashLog());
-        List<Drawable> imageList =  SendAppUtility.getListofInstalledAppImages(this);
         gridView = (GridView)findViewById(R.id.apk_grid);
-        gridView.setAdapter(new GridAdapter(this, imageList));
-
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Holder holder = (Holder)view.getTag();
+                //SendAppUtility.transferFile(holder.apkPath);
+                return true;
+            }
+        });
+        switcher = (ViewSwitcher) findViewById(R.id.profileSwitcher);
+        startScan();
 	}
+
+    public void startScan() {
+
+        new Thread() {
+
+            public void run() {
+
+                try{
+                    imageList =  SendAppUtility.getListofInstalledAppImages(getApplicationContext());
+                    _refreshHandler.sendEmptyMessage(REFRESH_SCREEN);
+                } catch(Exception e){
+                }
+            }
+        }.start();
+    }
+
+    // _refreshHandler handler, necessary for updating the UI in a/the thread
+    Handler _refreshHandler = new Handler(){
+        public void handleMessage(Message msg) {
+
+            switch(msg.what){
+
+                case REFRESH_SCREEN:
+                    gridView.setAdapter(new GridAdapter(getApplicationContext(), imageList));
+                    switcher.showNext();
+                    // To go back to the first view, use switcher.showPrevious()
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,6 +132,5 @@ public class MainActivity extends Activity {
             Log.e(TAG, "Couldn't store zip attachment.", ioe);
         }
     }
-
 
 }

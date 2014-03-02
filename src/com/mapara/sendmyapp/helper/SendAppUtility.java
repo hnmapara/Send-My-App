@@ -1,7 +1,11 @@
 package com.mapara.sendmyapp.helper;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 public class SendAppUtility {
@@ -27,19 +32,33 @@ public class SendAppUtility {
             Log.d(TAG, "Installed package :" + packageInfo.packageName);
             File f = new File(packageInfo.sourceDir);
             Log.d(TAG, "Source dir : " + packageInfo.sourceDir + " & size : "+ formattedFileSize(f.length()));
+            Log.d(TAG, "Installed package name : " + String.valueOf(packageInfo.loadLabel(pm)));
             //Log.d(TAG, "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
         }
        return packages;
     }
 
-    public static List<Drawable> getListofInstalledAppImages(Context ctx) {
+    public static List<ApkInfo> getListofInstalledAppImages(Context ctx) {
         final PackageManager pm = ctx.getPackageManager();
         List<ApplicationInfo> packages = getListofInstalledApp(ctx, pm);
-        List<Drawable> apkImageIds = new ArrayList<Drawable>();
+        List<ApkInfo> apkImageIds = new ArrayList<ApkInfo>();
         for (ApplicationInfo ai : packages) {
-            apkImageIds.add(ai.loadIcon(pm));
+            apkImageIds.add(new ApkInfo(ai.loadIcon(pm),String.valueOf(ai.loadLabel(pm)),
+                                        ai.sourceDir));
         }
         return apkImageIds;
+    }
+
+    public static class ApkInfo {
+        public Drawable apkImg;
+        public String apkName;
+        public String apkPath;
+
+        public ApkInfo(Drawable apkImg, String apkName, String apkPath) {
+            this.apkImg = apkImg;
+            this.apkName = apkName;
+            this.apkPath = apkPath;
+        }
     }
 
     public static void scanSDCardFile(Context ctx, String[] filePaths) {
@@ -96,5 +115,34 @@ public class SendAppUtility {
                 TimeUnit.MILLISECONDS.toSeconds(ms) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(ms))
         );
+    }
+
+    public static void transferFile(String sourcefilePath) {
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
+        String filename = sourcefilePath.substring(sourcefilePath.lastIndexOf("/") + 1);
+        try {
+             fis = new FileInputStream(sourcefilePath);
+             byte[] buf = new byte[1024];
+             fos = new FileOutputStream(Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+filename);
+            int bytesRead;
+            while ((bytesRead = fis.read(buf)) > 0) {
+                fos.write(buf, 0, bytesRead);
+            }
+            Log.d(TAG, filename + " file was written");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(fis!=null) fis.close();
+                if(fos!=null) fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 }

@@ -9,4 +9,14 @@
         android:layout_width="70dp"
         android:layout_height="70dp" />
 
+    <TextView
+        android:id="@+id/apk_name"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:singleLine="true"
+        android:ellipsize="middle"
+    />
+
 </LinearLayout>

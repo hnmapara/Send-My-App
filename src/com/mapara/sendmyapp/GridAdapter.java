@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.mapara.sendmyapp.helper.SendAppUtility;
 
 import java.util.List;
 
@@ -15,10 +18,10 @@ import java.util.List;
  */
 public class GridAdapter extends BaseAdapter {
     private Context _ctx;
-    private List<Drawable> _imageList;
+    private List<SendAppUtility.ApkInfo> _imageList;
     private LayoutInflater inflater;
 
-    public GridAdapter(Context ctx, List<Drawable> imageList) {
+    public GridAdapter(Context ctx, List<SendAppUtility.ApkInfo> imageList) {
         _ctx = ctx;
         _imageList = imageList;
         inflater = (LayoutInflater) _ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -30,7 +33,7 @@ public class GridAdapter extends BaseAdapter {
     }
 
     @Override
-    public Drawable getItem(int position) {
+    public SendAppUtility.ApkInfo getItem(int position) {
         return _imageList.get(position);
     }
 
@@ -46,11 +49,14 @@ public class GridAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.grid_item, null);
             holder = new Holder();
             holder.apkImg = (ImageView) convertView.findViewById(R.id.apk_image);
+            holder.apkName = (TextView) convertView.findViewById(R.id.apk_name);
             convertView.setTag(holder);
         } else {
             holder = (Holder)convertView.getTag();
         }
-        holder.apkImg.setImageDrawable((getItem(position)));
+        holder.apkImg.setImageDrawable(getItem(position).apkImg);
+        holder.apkName.setText(getItem(position).apkName);
+        holder.apkPath = getItem(position).apkPath;
         return convertView;
     }
 
@@ -58,4 +64,6 @@ public class GridAdapter extends BaseAdapter {
 }
 class Holder {
     ImageView apkImg;
+    TextView apkName;
+    String apkPath;
 }
